@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  BalanceViewController.swift
 //  ExpensesTracker
 //
 //  Created by Artem Stozhok on 26.09.2022.
@@ -7,7 +7,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class BalanceViewController: UIViewController {
+    
+    override func loadView() {
+        view = BalanceView(frame: UIScreen.main.bounds)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

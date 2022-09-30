@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		42AAF4D128E2434E00858733 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF4D028E2434E00858733 /* AppDelegate.swift */; };
-		42AAF4D528E2434E00858733 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF4D428E2434E00858733 /* ViewController.swift */; };
+		42AAF4D528E2434E00858733 /* BalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF4D428E2434E00858733 /* BalanceViewController.swift */; };
 		42AAF4DB28E2434E00858733 /* ExpensesTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF4D928E2434E00858733 /* ExpensesTracker.xcdatamodeld */; };
 		42AAF4DD28E2434F00858733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42AAF4DC28E2434F00858733 /* Assets.xcassets */; };
 		42AAF50328E39C9700858733 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF50028E39C9700858733 /* MainCoordinator.swift */; };
@@ -16,12 +16,13 @@
 		42AAF50528E39C9700858733 /* GeneralApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF50228E39C9700858733 /* GeneralApplicationCoordinator.swift */; };
 		42AAF50A28E39D2B00858733 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF50828E39D2B00858733 /* MainRouter.swift */; };
 		42AAF50B28E39D2B00858733 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF50928E39D2B00858733 /* Router.swift */; };
+		42AAF51128E620A700858733 /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF51028E620A700858733 /* BalanceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		42AAF4CD28E2434E00858733 /* ExpensesTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExpensesTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42AAF4D028E2434E00858733 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		42AAF4D428E2434E00858733 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		42AAF4D428E2434E00858733 /* BalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceViewController.swift; sourceTree = "<group>"; };
 		42AAF4DA28E2434E00858733 /* ExpensesTracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ExpensesTracker.xcdatamodel; sourceTree = "<group>"; };
 		42AAF4DC28E2434F00858733 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		42AAF4E128E2434F00858733 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -30,6 +31,7 @@
 		42AAF50228E39C9700858733 /* GeneralApplicationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralApplicationCoordinator.swift; sourceTree = "<group>"; };
 		42AAF50828E39D2B00858733 /* MainRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		42AAF50928E39D2B00858733 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		42AAF51028E620A700858733 /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +67,8 @@
 				42AAF4D028E2434E00858733 /* AppDelegate.swift */,
 				42AAF4FF28E39C8000858733 /* Coordinator */,
 				42AAF50728E39D2B00858733 /* Router */,
-				42AAF4D428E2434E00858733 /* ViewController.swift */,
+				42AAF4D428E2434E00858733 /* BalanceViewController.swift */,
+				42AAF51028E620A700858733 /* BalanceView.swift */,
 				42AAF4DC28E2434F00858733 /* Assets.xcassets */,
 				42AAF4E128E2434F00858733 /* Info.plist */,
 				42AAF4D928E2434E00858733 /* ExpensesTracker.xcdatamodeld */,
@@ -162,11 +165,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				42AAF50B28E39D2B00858733 /* Router.swift in Sources */,
-				42AAF4D528E2434E00858733 /* ViewController.swift in Sources */,
+				42AAF4D528E2434E00858733 /* BalanceViewController.swift in Sources */,
 				42AAF50A28E39D2B00858733 /* MainRouter.swift in Sources */,
 				42AAF50328E39C9700858733 /* MainCoordinator.swift in Sources */,
 				42AAF50428E39C9700858733 /* Coordinator.swift in Sources */,
 				42AAF4D128E2434E00858733 /* AppDelegate.swift in Sources */,
+				42AAF51128E620A700858733 /* BalanceView.swift in Sources */,
 				42AAF50528E39C9700858733 /* GeneralApplicationCoordinator.swift in Sources */,
 				42AAF4DB28E2434E00858733 /* ExpensesTracker.xcdatamodeld in Sources */,
 			);
