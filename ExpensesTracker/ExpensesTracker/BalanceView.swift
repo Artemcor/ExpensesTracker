@@ -23,6 +23,8 @@ class BalanceView: UIView {
         
         addSubviews()
         setConstraints()
+        
+        backgroundColor = UIColor.white
     }
     
     required init?(coder: NSCoder) {
@@ -36,7 +38,7 @@ class BalanceView: UIView {
     private func setConstraints() {
         NSLayoutConstraint.activate([
             balanceLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            balanceLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor)
+            balanceLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor)
         ])
     }
 }

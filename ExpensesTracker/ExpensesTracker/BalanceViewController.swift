@@ -10,7 +10,7 @@ import UIKit
 class BalanceViewController: UIViewController {
     
     override func loadView() {
-        view = BalanceView(frame: UIScreen.main.bounds)
+        view = BalanceView()
     }
 
     override func viewDidLoad() {

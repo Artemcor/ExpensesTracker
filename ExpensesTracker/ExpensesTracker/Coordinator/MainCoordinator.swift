@@ -21,7 +21,13 @@ class MainCoordinator: Coordinator {
     }
     
     func performCoordination() {
-
+        showBalanceScreen()
+    }
+    
+    private func showBalanceScreen() {
+        let balanceViewController = BalanceViewController()
+        
+        router.push(balanceViewController, animated: true)
     }
 }
 
