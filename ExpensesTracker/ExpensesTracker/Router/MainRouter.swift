@@ -1,16 +1,15 @@
 //
 //  MainRouter.swift
-//  EnemyLoss
+//  ExpensesTracker
 //
-//  Created by Artem Stozhok on 18.07.2022.
+//  Created by Artem Stozhok on 26.09.2022.
 //
 
-import Foundation
 import UIKit
 
 class MainRouter: Router {
     
-    unowned let navigationController: UINavigationController
+    let navigationController: UINavigationController
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -18,5 +17,9 @@ class MainRouter: Router {
     
     func push(_ controller: UIViewController, animated: Bool) {
         navigationController.pushViewController(controller, animated: animated)
+    }
+    
+    func present(_ controller: UIViewController, animated: Bool) {
+        navigationController.viewControllers.last?.present(controller, animated: true)
     }
 }

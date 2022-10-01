@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol BalanceViewControllerDelegate: AnyObject {
+    func addToBalanceButtonPressed(completion: @escaping (_ incomeSum: String) -> Void)
+}
+
 class BalanceViewController: UIViewController {
     
     private struct Constants {
@@ -14,11 +18,21 @@ class BalanceViewController: UIViewController {
             static let title = "Bitcoin balance:"
         }
     }
+
+    weak var delegate: BalanceViewControllerDelegate?
+    
+    // MARK: - Computed variables
+    
+    var balanceView: BalanceView {
+      return view as! BalanceView
+    }
     
     // MARK: - Lifecycle
     
     override func loadView() {
         view = BalanceView()
+        
+        balanceView.addToBalanceButton.addTarget(self, action: #selector(showAddAlert), for: .touchUpInside)
     }
 
     override func viewDidLoad() {
@@ -34,5 +48,16 @@ class BalanceViewController: UIViewController {
         
         title = Constants.NavigationBar.title
         navigationController.navigationBar.prefersLargeTitles = true
+    }
+    
+    @objc private func showAddAlert() {
+        delegate?.addToBalanceButtonPressed { [weak self] incomeSum in
+            guard let self = self else { return }
+            guard let incomeSum = Int(incomeSum),
+                  let balanceCounterLabelText = self.balanceView.balanceCounterLabel.text,
+                  let currentBalance = Int(balanceCounterLabelText) else { return }
+            
+            self.balanceView.balanceCounterLabel.text = String(incomeSum + currentBalance)
+        }
     }
 }
