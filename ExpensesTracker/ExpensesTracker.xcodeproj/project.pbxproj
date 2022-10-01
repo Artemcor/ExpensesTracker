@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		426B289B28E79AC900F6059C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426B289A28E79AC900F6059C /* LaunchScreen.storyboard */; };
 		426B289E28E8984B00F6059C /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426B289D28E8984B00F6059C /* AlertService.swift */; };
+		426B28A028E8B76A00F6059C /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426B289F28E8B76A00F6059C /* TransactionTableViewCell.swift */; };
 		42AAF4D128E2434E00858733 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF4D028E2434E00858733 /* AppDelegate.swift */; };
 		42AAF4D528E2434E00858733 /* BalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF4D428E2434E00858733 /* BalanceViewController.swift */; };
 		42AAF4DB28E2434E00858733 /* ExpensesTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF4D928E2434E00858733 /* ExpensesTracker.xcdatamodeld */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		426B289A28E79AC900F6059C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		426B289D28E8984B00F6059C /* AlertService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
+		426B289F28E8B76A00F6059C /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		42AAF4CD28E2434E00858733 /* ExpensesTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExpensesTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42AAF4D028E2434E00858733 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42AAF4D428E2434E00858733 /* BalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceViewController.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				42AAF50728E39D2B00858733 /* Router */,
 				42AAF4D428E2434E00858733 /* BalanceViewController.swift */,
 				42AAF51028E620A700858733 /* BalanceView.swift */,
+				426B289F28E8B76A00F6059C /* TransactionTableViewCell.swift */,
 				426B289C28E8984B00F6059C /* Services */,
 				426B289A28E79AC900F6059C /* LaunchScreen.storyboard */,
 				42AAF4DC28E2434F00858733 /* Assets.xcassets */,
@@ -180,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42AAF50B28E39D2B00858733 /* Router.swift in Sources */,
+				426B28A028E8B76A00F6059C /* TransactionTableViewCell.swift in Sources */,
 				42AAF4D528E2434E00858733 /* BalanceViewController.swift in Sources */,
 				42AAF50A28E39D2B00858733 /* MainRouter.swift in Sources */,
 				42AAF50328E39C9700858733 /* MainCoordinator.swift in Sources */,

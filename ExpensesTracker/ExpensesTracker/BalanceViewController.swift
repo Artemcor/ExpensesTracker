@@ -32,7 +32,7 @@ class BalanceViewController: UIViewController {
     override func loadView() {
         view = BalanceView()
         
-        balanceView.addToBalanceButton.addTarget(self, action: #selector(showAddAlert), for: .touchUpInside)
+        configureMainView()
     }
 
     override func viewDidLoad() {
@@ -42,6 +42,11 @@ class BalanceViewController: UIViewController {
     }
     
     // MARK: - Private
+    
+    private func configureMainView() {
+        balanceView.addToBalanceButton.addTarget(self, action: #selector(showAddAlert), for: .touchUpInside)
+        balanceView.setupTransactionsTableView(dataSource: self, delegate: self)
+    }
     
     private func configureNavigatinBar() {
         guard let navigationController = navigationController else { return }
@@ -59,5 +64,20 @@ class BalanceViewController: UIViewController {
             
             self.balanceView.balanceCounterLabel.text = String(incomeSum + currentBalance)
         }
+    }
+}
+
+// MARK: - TableViews Delegate, DataSource
+
+extension BalanceViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 30
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = balanceView.transactionsTableView.dequeueReusableCell(withIdentifier: "\(TransactionTableViewCell.self)", for: indexPath)
+        
+        return cell
     }
 }

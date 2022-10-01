@@ -44,6 +44,14 @@ class BalanceView: UIView {
         return button
     }()
     
+    var transactionsTableView: UITableView = {
+        let tableView = UITableView()
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tableView
+    }()
+    
     // MARK: - Lifecycle
     
     override init(frame: CGRect) {
@@ -58,6 +66,14 @@ class BalanceView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Public
+
+    func setupTransactionsTableView(dataSource: UITableViewDataSource, delegate: UITableViewDelegate) {
+        transactionsTableView.dataSource = dataSource
+        transactionsTableView.delegate = delegate
+        transactionsTableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: "\(TransactionTableViewCell.self)")
+    }
+    
     // MARK: - Private
     
     private func configureView() {
@@ -68,6 +84,7 @@ class BalanceView: UIView {
         addSubview(balanceCounterLabel)
         addSubview(addToBalanceButton)
         addSubview(addTransactionButton)
+        addSubview(transactionsTableView)
     }
     
     private func setConstraints() {
@@ -79,7 +96,12 @@ class BalanceView: UIView {
             addToBalanceButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             
             addTransactionButton.topAnchor.constraint(equalTo: balanceCounterLabel.bottomAnchor, constant: 20),
-            addTransactionButton.centerXAnchor.constraint(equalTo: centerXAnchor)
+            addTransactionButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            
+            transactionsTableView.topAnchor.constraint(equalTo: addTransactionButton.bottomAnchor, constant: 20),
+            transactionsTableView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            transactionsTableView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            transactionsTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
