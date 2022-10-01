@@ -9,6 +9,7 @@ import UIKit
 
 protocol BalanceViewControllerDelegate: AnyObject {
     func addToBalanceButtonPressed(completion: @escaping (_ incomeSum: String) -> Void)
+    func addTransactionButtonPressed()
 }
 
 class BalanceViewController: UIViewController {
@@ -44,7 +45,8 @@ class BalanceViewController: UIViewController {
     // MARK: - Private
     
     private func configureMainView() {
-        balanceView.addToBalanceButton.addTarget(self, action: #selector(showAddAlert), for: .touchUpInside)
+        balanceView.addToBalanceButton.addTarget(self, action: #selector(addToBalanceButtonPressed), for: .touchUpInside)
+        balanceView.addTransactionButton.addTarget(self, action: #selector(addTransactionButtonPressed), for: .touchUpInside)
         balanceView.setupTransactionsTableView(dataSource: self, delegate: self)
     }
     
@@ -55,7 +57,7 @@ class BalanceViewController: UIViewController {
         navigationController.navigationBar.prefersLargeTitles = true
     }
     
-    @objc private func showAddAlert() {
+    @objc private func addToBalanceButtonPressed() {
         delegate?.addToBalanceButtonPressed { [weak self] incomeSum in
             guard let self = self else { return }
             guard let incomeSum = Int(incomeSum),
@@ -64,6 +66,10 @@ class BalanceViewController: UIViewController {
             
             self.balanceView.balanceCounterLabel.text = String(incomeSum + currentBalance)
         }
+    }
+    
+    @objc private func addTransactionButtonPressed() {
+        delegate?.addTransactionButtonPressed()
     }
 }
 

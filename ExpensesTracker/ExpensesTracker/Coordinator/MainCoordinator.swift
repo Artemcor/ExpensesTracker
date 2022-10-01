@@ -41,4 +41,10 @@ extension MainCoordinator: BalanceViewControllerDelegate {
         
         router.present(alert, animated: true)
     }
+    
+    func addTransactionButtonPressed() {
+        let transactionController = TransactionViewController()
+        
+        router.push(transactionController, animated: true)
+    }
 }
