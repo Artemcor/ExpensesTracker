@@ -14,6 +14,9 @@
 		426B28A628E8D49100F6059C /* TransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426B28A528E8D49100F6059C /* TransactionView.swift */; };
 		426B28A828E98B8C00F6059C /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426B28A728E98B8C00F6059C /* Transaction.swift */; };
 		4291349E28E9A2F8009A9055 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4291349D28E9A2F8009A9055 /* DataModel.swift */; };
+		429134A028E9C7D9009A9055 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4291349F28E9C7D9009A9055 /* ApiService.swift */; };
+		429134A228E9CF11009A9055 /* BitcoinPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429134A128E9CF11009A9055 /* BitcoinPrice.swift */; };
+		429134A428E9EA20009A9055 /* UserDefaultsSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429134A328E9EA20009A9055 /* UserDefaultsSaver.swift */; };
 		42AAF4D128E2434E00858733 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF4D028E2434E00858733 /* AppDelegate.swift */; };
 		42AAF4D528E2434E00858733 /* BalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF4D428E2434E00858733 /* BalanceViewController.swift */; };
 		42AAF4DB28E2434E00858733 /* ExpensesTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 42AAF4D928E2434E00858733 /* ExpensesTracker.xcdatamodeld */; };
@@ -34,6 +37,9 @@
 		426B28A528E8D49100F6059C /* TransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionView.swift; sourceTree = "<group>"; };
 		426B28A728E98B8C00F6059C /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		4291349D28E9A2F8009A9055 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		4291349F28E9C7D9009A9055 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
+		429134A128E9CF11009A9055 /* BitcoinPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinPrice.swift; sourceTree = "<group>"; };
+		429134A328E9EA20009A9055 /* UserDefaultsSaver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsSaver.swift; sourceTree = "<group>"; };
 		42AAF4CD28E2434E00858733 /* ExpensesTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExpensesTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42AAF4D028E2434E00858733 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42AAF4D428E2434E00858733 /* BalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +69,8 @@
 			isa = PBXGroup;
 			children = (
 				426B289D28E8984B00F6059C /* AlertService.swift */,
+				4291349F28E9C7D9009A9055 /* ApiService.swift */,
+				429134A328E9EA20009A9055 /* UserDefaultsSaver.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -91,6 +99,7 @@
 			children = (
 				426B28A728E98B8C00F6059C /* Transaction.swift */,
 				4291349D28E9A2F8009A9055 /* DataModel.swift */,
+				429134A128E9CF11009A9055 /* BitcoinPrice.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -228,10 +237,13 @@
 			files = (
 				42AAF50B28E39D2B00858733 /* Router.swift in Sources */,
 				426B28A028E8B76A00F6059C /* TransactionTableViewCell.swift in Sources */,
+				429134A228E9CF11009A9055 /* BitcoinPrice.swift in Sources */,
 				42AAF4D528E2434E00858733 /* BalanceViewController.swift in Sources */,
+				429134A428E9EA20009A9055 /* UserDefaultsSaver.swift in Sources */,
 				42AAF50A28E39D2B00858733 /* MainRouter.swift in Sources */,
 				426B28A828E98B8C00F6059C /* Transaction.swift in Sources */,
 				4291349E28E9A2F8009A9055 /* DataModel.swift in Sources */,
+				429134A028E9C7D9009A9055 /* ApiService.swift in Sources */,
 				42AAF50328E39C9700858733 /* MainCoordinator.swift in Sources */,
 				426B289E28E8984B00F6059C /* AlertService.swift in Sources */,
 				42AAF50428E39C9700858733 /* Coordinator.swift in Sources */,

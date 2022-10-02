@@ -55,6 +55,19 @@ class BalanceViewController: UIViewController {
         super.viewDidLoad()
         
         configureNavigatinBar()
+        updateBitcoinRate()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        subscribeToNotifications()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Private
@@ -92,6 +105,37 @@ class BalanceViewController: UIViewController {
         self.transations.append(transaction)
     }
     
+    private func subscribeToNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive(notification:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
+    
+    private func updateBitcoinRate() {
+        let lastBitcoinRequestDate = UserDefaultsSaver.loadDateForAfterVideoSubscribeAlert()
+        
+        if let lastDate = lastBitcoinRequestDate {
+            let edditedDate = lastDate.addingTimeInterval(60.0 * 60.0)
+            if edditedDate > Date() {
+                if let rate = UserDefaultsSaver.loadBitcoinRate() {
+                    balanceView.updateBitcoinRateLabel(with: rate)
+                } else {
+                    balanceView.bitcoinRateLabel.isHidden = true
+                }
+                return
+            }
+        }
+
+        APIService.getBitcoinRate { bitcoinData in
+            let rate = bitcoinData.bpi.usd.rate
+            
+            UserDefaultsSaver.saveDateOfBitcoinRateRequest(date: Date())
+            UserDefaultsSaver.saveBitcoinRate(rate)
+            
+            DispatchQueue.main.async {
+                self.balanceView.updateBitcoinRateLabel(with: rate)
+            }
+        }
+    }
+    
     // MARK: - Target methods
     
     @objc private func addToBalanceButtonPressed() {
@@ -106,6 +150,10 @@ class BalanceViewController: UIViewController {
     
     @objc private func addTransactionButtonPressed() {
         delegate?.addTransactionButtonPressed(self)
+    }
+    
+    @objc private func applicationDidBecomeActive(notification: Notification) {
+        updateBitcoinRate()
     }
 }
 

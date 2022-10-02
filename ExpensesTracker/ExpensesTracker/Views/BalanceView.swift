@@ -13,6 +13,8 @@ class BalanceView: UIView {
         static let balanceCounterLabelText = "0"
         static let addToBalanceButtonTitle = "Add"
         static let addTransactionButtonTitle = "Add transaction"
+        static let bitcoinRateTitle = "Bitcoin rate:"
+        static let dolarSigh = "$"
     }
 
     // MARK: - Subview variables
@@ -52,6 +54,15 @@ class BalanceView: UIView {
         return tableView
     }()
     
+    var bitcoinRateLabel: UILabel = {
+        let label = UILabel()
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = Constants.bitcoinRateTitle
+        
+        return label
+    }()
+    
     // MARK: - Lifecycle
     
     override init(frame: CGRect) {
@@ -74,6 +85,10 @@ class BalanceView: UIView {
         transactionsTableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: "\(TransactionTableViewCell.self)")
     }
     
+    func updateBitcoinRateLabel(with rate: String) {
+        bitcoinRateLabel.text = Constants.bitcoinRateTitle + " " + rate + " " +  Constants.dolarSigh
+    }
+    
     // MARK: - Private
     
     private func configureView() {
@@ -84,6 +99,7 @@ class BalanceView: UIView {
         addSubview(balanceCounterLabel)
         addSubview(addToBalanceButton)
         addSubview(addTransactionButton)
+        addSubview(bitcoinRateLabel)
         addSubview(transactionsTableView)
     }
     
@@ -98,7 +114,11 @@ class BalanceView: UIView {
             addTransactionButton.topAnchor.constraint(equalTo: balanceCounterLabel.bottomAnchor, constant: 20),
             addTransactionButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            transactionsTableView.topAnchor.constraint(equalTo: addTransactionButton.bottomAnchor, constant: 20),
+            bitcoinRateLabel.topAnchor.constraint(equalTo: addTransactionButton.bottomAnchor, constant: 20),
+            bitcoinRateLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            bitcoinRateLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            
+            transactionsTableView.topAnchor.constraint(equalTo: bitcoinRateLabel.bottomAnchor, constant: 20),
             transactionsTableView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             transactionsTableView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             transactionsTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
