@@ -12,7 +12,7 @@ enum TransactionCategory: String {
 import Foundation
 
 struct Transaction {
-    let sum: String
+    let sum: Int
     let date: Date
     let category: TransactionCategory?
 }

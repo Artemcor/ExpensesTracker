@@ -22,4 +22,8 @@ class MainRouter: Router {
     func present(_ controller: UIViewController, animated: Bool) {
         navigationController.viewControllers.last?.present(controller, animated: true)
     }
+    
+    func pop() {
+        navigationController.popViewController(animated: true)
+    }
 }

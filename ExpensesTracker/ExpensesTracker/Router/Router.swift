@@ -12,4 +12,5 @@ protocol Router {
     var navigationController: UINavigationController { get }
     func push(_ controller: UIViewController, animated: Bool)
     func present(_ controller: UIViewController, animated: Bool)
+    func pop()
 }

@@ -69,7 +69,7 @@ class TransactionView: UIView {
             transactionSumTextField.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             transactionSumTextField.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             
-            categoryPickerView.topAnchor.constraint(equalTo: transactionSumTextField.bottomAnchor, constant: 20),
+            categoryPickerView.topAnchor.constraint(equalTo: transactionSumTextField.bottomAnchor),
             categoryPickerView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             categoryPickerView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor)
         ])

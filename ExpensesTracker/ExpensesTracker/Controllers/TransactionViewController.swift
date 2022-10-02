@@ -7,6 +7,14 @@
 
 import UIKit
 
+protocol TransactionViewControllerDataDelegate: AnyObject {
+    func transactionViewController(didFinishAdding transaction: Transaction)
+}
+
+protocol TransactionViewControllerDelegate: AnyObject {
+    func pop()
+}
+
 class TransactionViewController: UIViewController {
     
     private struct Constants {
@@ -15,13 +23,16 @@ class TransactionViewController: UIViewController {
         }
     }
     
+    weak var delegate: TransactionViewControllerDelegate?
+    weak var dataDelegate: TransactionViewControllerDataDelegate?
+    
     // MARK: - Computed variables
     
     var transactionView: TransactionView {
       return view as! TransactionView
     }
     
-    let categoryPickerViewModel = ["groceries", "taxi", "electronics", "restaurant", "other"]
+    let categoryPickerModel: [TransactionCategory] = [.groceries, .taxi, .electronics, .restaurant, .other]
     
     // MARK: - Lifecycle
     
@@ -52,7 +63,13 @@ class TransactionViewController: UIViewController {
     // MARK: - Target methods
 
     @objc private func addTapped() {
+        guard let sum = transactionView.transactionSumTextField.text, let sumInt = Int(sum), sumInt > 0 else {return }
         
+        let categoryIndex = transactionView.categoryPickerView.selectedRow(inComponent: 0)
+        let category = categoryPickerModel[categoryIndex]
+        let transaction = Transaction(sum: -sumInt, date: Date(), category: category)
+        dataDelegate?.transactionViewController(didFinishAdding: transaction)
+        delegate?.pop()
     }
 }
 
@@ -65,11 +82,11 @@ extension TransactionViewController: UIPickerViewDelegate, UIPickerViewDataSourc
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return categoryPickerViewModel.count
+        return categoryPickerModel.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return categoryPickerViewModel[row]
+        return categoryPickerModel[row].rawValue
     }
 }
 

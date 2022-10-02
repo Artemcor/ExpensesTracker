@@ -16,7 +16,7 @@ private let dateFormatter: DateFormatter = {
 
 protocol BalanceViewControllerDelegate: AnyObject {
     func addToBalanceButtonPressed(completion: @escaping (_ incomeSum: String) -> Void)
-    func addTransactionButtonPressed()
+    func addTransactionButtonPressed(_ controller: BalanceViewController)
 }
 
 class BalanceViewController: UIViewController {
@@ -79,9 +79,17 @@ class BalanceViewController: UIViewController {
     private func configureTransactionCell(_ cell: TransactionTableViewCell, with transation: Transaction) {
         let dateString = dateFormatter.string(from: transation.date)
 
-        cell.sumLabel.text = transation.sum
+        cell.sumLabel.text = String(transation.sum)
         cell.dateLabel.text = dateString
         cell.categoryLabel.text = transation.category?.rawValue
+    }
+    
+    private func changeCurrentBalance(with transaction: Transaction) {
+        guard let balanceCounterLabelText = self.balanceView.balanceCounterLabel.text,
+              let currentBalance = Int(balanceCounterLabelText) else { return }
+        
+        self.balanceView.balanceCounterLabel.text = String(transaction.sum + currentBalance)
+        self.transations.append(transaction)
     }
     
     // MARK: - Target methods
@@ -89,18 +97,15 @@ class BalanceViewController: UIViewController {
     @objc private func addToBalanceButtonPressed() {
         delegate?.addToBalanceButtonPressed { [weak self] incomeSum in
             guard let self = self else { return }
-            guard let incomeSum = Int(incomeSum),
-                  let balanceCounterLabelText = self.balanceView.balanceCounterLabel.text,
-                  let currentBalance = Int(balanceCounterLabelText) else { return }
+            guard let incomeSum = Int(incomeSum) else { return }
             
-            self.balanceView.balanceCounterLabel.text = String(incomeSum + currentBalance)
-            let transaction = Transaction(sum: String(incomeSum), date: Date(), category: nil)
-            self.transations.append(transaction)
+            let transaction = Transaction(sum: incomeSum, date: Date(), category: nil)
+            self.changeCurrentBalance(with: transaction)
         }
     }
     
     @objc private func addTransactionButtonPressed() {
-        delegate?.addTransactionButtonPressed()
+        delegate?.addTransactionButtonPressed(self)
     }
 }
 
@@ -119,5 +124,14 @@ extension BalanceViewController: UITableViewDelegate, UITableViewDataSource {
         configureTransactionCell(cell, with: transaction)
         
         return cell
+    }
+}
+
+// MARK: - TransactionViewController DataDelegate
+
+extension BalanceViewController: TransactionViewControllerDataDelegate {
+    
+    func transactionViewController(didFinishAdding transaction: Transaction) {
+        changeCurrentBalance(with: transaction)
     }
 }
