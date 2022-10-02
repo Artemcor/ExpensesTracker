@@ -49,7 +49,10 @@ class TransactionViewController: UIViewController {
 
     }
     
+    // MARK: - Target methods
+
     @objc private func addTapped() {
+        
     }
 }
 

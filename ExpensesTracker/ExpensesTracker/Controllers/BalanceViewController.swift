@@ -7,6 +7,13 @@
 
 import UIKit
 
+private let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .short
+    formatter.timeStyle = .short
+    return formatter
+}()
+
 protocol BalanceViewControllerDelegate: AnyObject {
     func addToBalanceButtonPressed(completion: @escaping (_ incomeSum: String) -> Void)
     func addTransactionButtonPressed()
@@ -21,6 +28,14 @@ class BalanceViewController: UIViewController {
     }
 
     weak var delegate: BalanceViewControllerDelegate?
+    
+    // MARK: - Stored variables
+    
+    var transations = [Transaction]() {
+        didSet {
+            modelHasBeenUpdated()
+        }
+    }
     
     // MARK: - Computed variables
     
@@ -57,6 +72,20 @@ class BalanceViewController: UIViewController {
         navigationController.navigationBar.prefersLargeTitles = true
     }
     
+    private func modelHasBeenUpdated() {
+        balanceView.transactionsTableView.reloadData()
+    }
+    
+    private func configureTransactionCell(_ cell: TransactionTableViewCell, with transation: Transaction) {
+        let dateString = dateFormatter.string(from: transation.date)
+
+        cell.sumLabel.text = transation.sum
+        cell.dateLabel.text = dateString
+        cell.categoryLabel.text = transation.category?.rawValue
+    }
+    
+    // MARK: - Target methods
+    
     @objc private func addToBalanceButtonPressed() {
         delegate?.addToBalanceButtonPressed { [weak self] incomeSum in
             guard let self = self else { return }
@@ -65,6 +94,8 @@ class BalanceViewController: UIViewController {
                   let currentBalance = Int(balanceCounterLabelText) else { return }
             
             self.balanceView.balanceCounterLabel.text = String(incomeSum + currentBalance)
+            let transaction = Transaction(sum: String(incomeSum), date: Date(), category: nil)
+            self.transations.append(transaction)
         }
     }
     
@@ -78,11 +109,14 @@ class BalanceViewController: UIViewController {
 extension BalanceViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 30
+        return transations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = balanceView.transactionsTableView.dequeueReusableCell(withIdentifier: "\(TransactionTableViewCell.self)", for: indexPath)
+        guard let cell = balanceView.transactionsTableView.dequeueReusableCell(withIdentifier: "\(TransactionTableViewCell.self)", for: indexPath) as? TransactionTableViewCell else { fatalError("Error: TransactionTableViewCell - not loaded") }
+        
+        let transaction = transations[indexPath.row]
+        configureTransactionCell(cell, with: transaction)
         
         return cell
     }
