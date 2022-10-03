@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 private let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
@@ -28,10 +29,15 @@ class BalanceViewController: UIViewController {
     }
 
     weak var delegate: BalanceViewControllerDelegate?
+    var managedContext: NSManagedObjectContext?
     
     // MARK: - Stored variables
     
-    var transations = [Transaction]() {
+    private var requestLimit = 20
+    private var requestOffset = 0
+    private var isPaginationAllowed = true
+    
+    private var transations = [Transaction]() {
         didSet {
             modelHasBeenUpdated()
         }
@@ -39,7 +45,7 @@ class BalanceViewController: UIViewController {
     
     // MARK: - Computed variables
     
-    var balanceView: BalanceView {
+    private var balanceView: BalanceView {
       return view as! BalanceView
     }
     
@@ -55,7 +61,9 @@ class BalanceViewController: UIViewController {
         super.viewDidLoad()
         
         configureNavigatinBar()
+        fetchBalanceSum()
         updateBitcoinRate()
+        fetchTransactins(with: requestLimit, and: requestOffset)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,24 +97,28 @@ class BalanceViewController: UIViewController {
         balanceView.transactionsTableView.reloadData()
     }
     
-    private func configureTransactionCell(_ cell: TransactionTableViewCell, with transation: Transaction) {
-        let dateString = dateFormatter.string(from: transation.date)
+    private func configureTransactionCell(_ cell: TransactionTableViewCell, with transaction: Transaction) {
+        var dateString = ""
+        if let date = transaction.date {
+            dateString = dateFormatter.string(from: date)
+        }
 
-        cell.sumLabel.text = String(transation.sum)
+        cell.sumLabel.text = String(transaction.sum)
         cell.dateLabel.text = dateString
-        cell.categoryLabel.text = transation.category?.rawValue
+        cell.categoryLabel.text = transaction.category
     }
     
     private func changeCurrentBalance(with transaction: Transaction) {
         guard let balanceCounterLabelText = self.balanceView.balanceCounterLabel.text,
               let currentBalance = Int(balanceCounterLabelText) else { return }
         
-        self.balanceView.balanceCounterLabel.text = String(transaction.sum + currentBalance)
-        self.transations.append(transaction)
+        self.balanceView.balanceCounterLabel.text = String(Int(transaction.sum) + currentBalance)
+        self.transations.insert(transaction, at: 0)
     }
     
     private func subscribeToNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive(notification:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(notification:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
     private func updateBitcoinRate() {
@@ -139,11 +151,17 @@ class BalanceViewController: UIViewController {
     // MARK: - Target methods
     
     @objc private func addToBalanceButtonPressed() {
+        guard let managedContext = managedContext else { return }
+
         delegate?.addToBalanceButtonPressed { [weak self] incomeSum in
             guard let self = self else { return }
             guard let incomeSum = Int(incomeSum) else { return }
             
-            let transaction = Transaction(sum: incomeSum, date: Date(), category: nil)
+            let transaction = Transaction(context: managedContext)
+            transaction.sum = Int64(incomeSum)
+            transaction.date = Date()
+            transaction.category = nil
+            self.saveContext()
             self.changeCurrentBalance(with: transaction)
         }
     }
@@ -154,6 +172,81 @@ class BalanceViewController: UIViewController {
     
     @objc private func applicationDidBecomeActive(notification: Notification) {
         updateBitcoinRate()
+    }
+    
+    @objc private func applicationDidEnterBackground(notification: Notification) {
+        saveBalanceSum()
+    }
+    
+    // MARK: - Core data methods
+    
+    private func fetchTransactins(with limit: Int, and offset: Int) {
+        guard let managedContext = managedContext else { return }
+
+        let transactionFetch: NSFetchRequest<Transaction> = Transaction.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)
+
+        transactionFetch.fetchLimit = limit
+        transactionFetch.fetchOffset = offset
+        transactionFetch.sortDescriptors = [sortDescriptor]
+        requestOffset += limit
+        do {
+            let results = try managedContext.fetch(transactionFetch)
+            if results.count < limit {
+                isPaginationAllowed = false
+            }
+            transations += results
+        } catch let error as NSError {
+            print("Fetch error: \(error) description: \(error.userInfo)")
+        }
+    }
+    
+    private func fetchBalanceSum() {
+        guard let managedContext = managedContext else { return }
+        
+        let balanceFetch: NSFetchRequest<Balance> = Balance.fetchRequest()
+        do {
+            let results = try managedContext.fetch(balanceFetch)
+            if let balance = results.first {
+                balanceView.balanceCounterLabel.text = String(balance.sum)
+            }
+            
+        } catch let error as NSError {
+            print("Fetch error: \(error) description: \(error.userInfo)")
+        }
+    }
+    
+    private func saveBalanceSum() {
+        guard let managedContext = managedContext else { return }
+
+        let balanceFetch: NSFetchRequest<Balance> = Balance.fetchRequest()
+        do {
+            let results = try managedContext.fetch(balanceFetch)
+            if let balance = results.first {
+                balance.sum = Int64(balanceView.balanceCounterLabel.text!)!
+                saveContext()
+            } else {
+                let balance = Balance(context: managedContext)
+                balance.sum = Int64(balanceView.balanceCounterLabel.text!)!
+                saveContext()
+            }
+            
+        } catch let error as NSError {
+            print("Fetch error: \(error) description: \(error.userInfo)")
+        }
+    }
+    
+    func saveContext () {
+        guard let managedContext = managedContext else { return }
+
+        if managedContext.hasChanges {
+            do {
+                try managedContext.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
     }
 }
 
@@ -172,6 +265,19 @@ extension BalanceViewController: UITableViewDelegate, UITableViewDataSource {
         configureTransactionCell(cell, with: transaction)
         
         return cell
+    }
+}
+
+// MARK: - Scrollviews Delegate
+
+extension BalanceViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard isPaginationAllowed else { return }
+        
+        let position = scrollView.contentOffset.y
+        if position > (balanceView.transactionsTableView.contentSize.height - 10 - scrollView.frame.size.height) {
+            fetchTransactins(with: requestLimit, and: requestOffset)
+        }
     }
 }
 

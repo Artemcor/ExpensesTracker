@@ -6,6 +6,11 @@
 //
 
 import UIKit
+import CoreData
+
+enum TransactionCategory: String {
+    case groceries, taxi, electronics, restaurant, other
+}
 
 protocol TransactionViewControllerDataDelegate: AnyObject {
     func transactionViewController(didFinishAdding transaction: Transaction)
@@ -25,14 +30,15 @@ class TransactionViewController: UIViewController {
     
     weak var delegate: TransactionViewControllerDelegate?
     weak var dataDelegate: TransactionViewControllerDataDelegate?
+    var managedContext: NSManagedObjectContext?
     
     // MARK: - Computed variables
     
-    var transactionView: TransactionView {
+    private var transactionView: TransactionView {
       return view as! TransactionView
     }
     
-    let categoryPickerModel: [TransactionCategory] = [.groceries, .taxi, .electronics, .restaurant, .other]
+    private let categoryPickerModel: [TransactionCategory] = [.groceries, .taxi, .electronics, .restaurant, .other]
     
     // MARK: - Lifecycle
     
@@ -63,11 +69,23 @@ class TransactionViewController: UIViewController {
     // MARK: - Target methods
 
     @objc private func addTapped() {
+        guard let managedContext = managedContext else { return }
+
         guard let sum = transactionView.transactionSumTextField.text, let sumInt = Int(sum), sumInt > 0 else {return }
         
         let categoryIndex = transactionView.categoryPickerView.selectedRow(inComponent: 0)
-        let category = categoryPickerModel[categoryIndex]
-        let transaction = Transaction(sum: -sumInt, date: Date(), category: category)
+        let category = categoryPickerModel[categoryIndex].rawValue
+        let transaction = Transaction(context: managedContext)
+        
+        transaction.sum = Int64(-sumInt)
+        transaction.date = Date()
+        transaction.category = category
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Save error: \(error), description: \(error.userInfo)")
+        }
+        
         dataDelegate?.transactionViewController(didFinishAdding: transaction)
         delegate?.pop()
     }

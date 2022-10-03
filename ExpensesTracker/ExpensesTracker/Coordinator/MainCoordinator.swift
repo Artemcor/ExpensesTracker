@@ -12,11 +12,14 @@ class MainCoordinator: Coordinator {
     // MARK: - Variables
     
     private let router: Router
+    private let coreDataStack: CoreDataStack
     
     // MARK: - Init
     
     init(router: Router) {
         self.router = router
+        
+        coreDataStack = CoreDataStack(modelName: "ExpensesTracker")
     }
     
     func performCoordination() {
@@ -27,8 +30,19 @@ class MainCoordinator: Coordinator {
         let balanceViewController = BalanceViewController()
         
         balanceViewController.delegate = self
+        balanceViewController.managedContext = coreDataStack.managedContext
         
         router.push(balanceViewController, animated: true)
+    }
+    
+    private func showTransactionScreen(_ controller: BalanceViewController) {
+        let transactionController = TransactionViewController()
+        
+        transactionController.delegate = self
+        transactionController.dataDelegate = controller
+        transactionController.managedContext = coreDataStack.managedContext
+        
+        router.push(transactionController, animated: true)
     }
 }
 
@@ -43,12 +57,7 @@ extension MainCoordinator: BalanceViewControllerDelegate {
     }
     
     func addTransactionButtonPressed(_ controller: BalanceViewController) {
-        let transactionController = TransactionViewController()
-        
-        transactionController.delegate = self
-        transactionController.dataDelegate = controller
-        
-        router.push(transactionController, animated: true)
+        showTransactionScreen(controller)
     }
 }
 
