@@ -8,6 +8,11 @@
 import UIKit
 
 class TransactionView: UIView {
+    
+    private struct Constants {
+        static let textFieldPlaceholder = "How many did you spend?"
+
+    }
 
     // MARK: - Subview variables
 
@@ -15,7 +20,7 @@ class TransactionView: UIView {
         let textField = UITextField()
         
         textField.keyboardType = .numberPad
-        textField.placeholder = "How many did you spend?"
+        textField.placeholder = Constants.textFieldPlaceholder
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.becomeFirstResponder()
