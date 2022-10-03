@@ -11,10 +11,12 @@ class BalanceView: UIView {
     
     private struct Constants {
         static let balanceCounterLabelText = "0"
-        static let addToBalanceButtonTitle = "Add"
-        static let addTransactionButtonTitle = "Add transaction"
+        static let addToBalanceButtonText = "Add"
+        static let addTransactionButtonText = "Add transaction"
         static let bitcoinRateTitle = "Bitcoin rate:"
         static let dolarSigh = "$"
+        static let transactionHistoryText = "Transaction history:"
+
     }
 
     // MARK: - Subview variables
@@ -31,7 +33,7 @@ class BalanceView: UIView {
     var addToBalanceButton: UIButton = {
         let button = UIButton(type: .system)
         
-        button.setTitle(Constants.addToBalanceButtonTitle, for: .normal)
+        button.setTitle(Constants.addToBalanceButtonText, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -40,7 +42,7 @@ class BalanceView: UIView {
     var addTransactionButton: UIButton = {
         let button = UIButton(type: .system)
         
-        button.setTitle(Constants.addTransactionButtonTitle, for: .normal)
+        button.setTitle(Constants.addTransactionButtonText, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -59,6 +61,15 @@ class BalanceView: UIView {
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = Constants.bitcoinRateTitle
+        
+        return label
+    }()
+    
+    var transactionHistoryLabel: UILabel = {
+        let label = UILabel()
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = Constants.transactionHistoryText
         
         return label
     }()
@@ -101,6 +112,7 @@ class BalanceView: UIView {
         addSubview(addTransactionButton)
         addSubview(bitcoinRateLabel)
         addSubview(transactionsTableView)
+        addSubview(transactionHistoryLabel)
     }
     
     private func setConstraints() {
@@ -118,7 +130,10 @@ class BalanceView: UIView {
             bitcoinRateLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             bitcoinRateLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             
-            transactionsTableView.topAnchor.constraint(equalTo: bitcoinRateLabel.bottomAnchor, constant: 20),
+            transactionHistoryLabel.topAnchor.constraint(equalTo: bitcoinRateLabel.bottomAnchor, constant: 40),
+            transactionHistoryLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            
+            transactionsTableView.topAnchor.constraint(equalTo: transactionHistoryLabel.bottomAnchor, constant: 10),
             transactionsTableView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             transactionsTableView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             transactionsTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)

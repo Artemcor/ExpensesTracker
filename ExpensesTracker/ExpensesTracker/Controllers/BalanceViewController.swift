@@ -103,7 +103,11 @@ class BalanceViewController: UIViewController {
             dateString = dateFormatter.string(from: date)
         }
 
-        cell.sumLabel.text = String(transaction.sum)
+        if transaction.sum > 0 {
+            cell.sumLabel.text = "+" + String(transaction.sum)
+        } else {
+            cell.sumLabel.text = String(transaction.sum)
+        }
         cell.dateLabel.text = dateString
         cell.categoryLabel.text = transaction.category
     }
@@ -236,7 +240,7 @@ class BalanceViewController: UIViewController {
         }
     }
     
-    func saveContext () {
+    private func saveContext () {
         guard let managedContext = managedContext else { return }
 
         if managedContext.hasChanges {
